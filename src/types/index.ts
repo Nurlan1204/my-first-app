@@ -1,23 +1,25 @@
 export interface Product {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    image: string;
-    category: 'clothing'| 'shoes'| 'equipment' | 'accessories';
-    brand: string;
-    rating: number;
-    Instock: number;
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  category: 'clothing' | 'shoes' | 'equipment' | 'accessories';
+  brand: string;
+  rating: number;
+  inStock: number;
 }
+
 export interface CartItem {
-    product: Product;
-    quantity: number;
+  product: Product;
+  quantity: number;
 }
+
 export interface User {
-    id: number;
-    email: string;
-    password: string;
-    name: string;
-    address: string;
-    phone: string;
+  id: string;
+  email: string;
+  name: string;
 }
+
+// ВОТ ЭТА СТРОЧКА ОБЯЗАТЕЛЬНА:
+export type Page = 'main' | 'cart' | 'auth' | 'product-detail';

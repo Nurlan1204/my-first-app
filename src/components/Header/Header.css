@@ -2,10 +2,11 @@
 .header {
   background-color: #ffffff;
   border-bottom: 1px solid #e5e7eb;
+  width: 100%;
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .header-container {
@@ -15,34 +16,54 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
-.header-logo a {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #1f2937;
+/* Стили логотипа */
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -0.5px;
+  user-select: none;
 }
 
-.header-logo span {
-  color: #2563eb; /* Спортивный синий акцент */
+.logo span {
+  color: #2563eb; /* Синий акцент */
 }
 
-.header-nav {
+/* Навигация (ссылки) */
+.navigation {
   display: flex;
-  gap: 25px;
+  align-items: center;
+  gap: 20px; /* Отступы между кнопками категорий */
 }
 
 .nav-link {
+  background: none;
+  border: none;
+  font-size: 15px;
   font-weight: 500;
-  color: #4b5563;
-  transition: color 0.2s ease;
+  color: #4b5563; /* Серый цвет текста */
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
 .nav-link:hover {
   color: #2563eb;
+  background-color: #eff6ff; /* Легкий синий фон при наведении */
 }
 
+.nav-link.active {
+  color: #2563eb;
+  background-color: #eff6ff;
+  font-weight: 600;
+}
+
+/* Блок поиска и кнопок действий */
 .header-actions {
   display: flex;
   align-items: center;
@@ -56,40 +77,40 @@
   border-radius: 8px;
   padding: 6px 12px;
   border: 1px solid transparent;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s;
 }
 
 .search-box:focus-within {
-  background-color: #fff;
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background-color: #ffffff;
 }
 
 .search-box input {
-  border: none;
   background: none;
+  border: none;
   outline: none;
   font-size: 14px;
   color: #111827;
-  width: 180px;
+  width: 160px;
 }
 
 .search-btn {
-  color: #9ca3af;
-  display: flex;
-  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.search-btn:hover {
-  color: #2563eb;
-}
-
+/* Иконки личного кабинета и корзины */
 .action-btn {
-  color: #374151;
-  padding: 8px;
-  border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
   position: relative;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,22 +118,23 @@
 
 .action-btn:hover {
   background-color: #f3f4f6;
-  color: #2563eb;
 }
 
+/* Красный кружок уведомления для корзины */
 .cart-badge {
   position: absolute;
   top: -2px;
   right: -2px;
-  background-color: #ef4444; /* Красный индикатор */
+  background-color: #ef4444;
   color: white;
-  font-size: 11px;
-  font-weight: bold;
+  font-size: 10px;
+  font-weight: 700;
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  min-width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #fff;
+  padding: 0 4px;
+  border: 2px solid #ffffff;
 }
