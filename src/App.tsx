@@ -1,99 +1,115 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Header } from './components/Header/Header';
-import { Footer } from './components/Footer/Footer';
-import type { Page } from './types';
-import './App.css'
-
-
-
-// Импорты глобальных стилей (если они тебе нужны)
+import { MainPage } from './pages/MainPages'; // Проверь точное имя файла (MainPages или MainPage)
 import './App.css';
-import './App.css';
-import './components/Header/Header.css';
-import './components/Footer/Footer.css';
-import { MainPage } from './pages/MainPages';
-// ... весь остальной код App() ниже остается без изменений
 
-function App() {
-  // Управляем текущей страницей (по умолчанию 'main' — главная)
-  const [currentPage, setCurrentPage] = useState<Page>('main');
-  
-  // Текущая выбранная категория фильтрации (пока просто сохраняем строку)
+// Определим интерфейс для товара в корзине
+interface CartItem {
+  id: string;
+  quantity: number;
+}
+
+export const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<string>('main');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
-  // Счетчик корзины (пока временный)
-  const [cartCount, setCartCount] = useState<number>(0);
-  console.log(setCartCount);
-  
+  // Храним товары в корзине как массив объектов { id, quantity }
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  // Вычисляем общее количество товаров для шапки
+  const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    console.log(`Выбрана категория: ${category}`); 
-    // Тут в будущем будет срабатывать фильтрация массива товаров
+    setCurrentPage('main');
   };
 
-  // Функция-роутер: рендерит нужный компонент в зависимости от currentPage
+  // Функция добавления товара в корзину
+  // Функция добавления / увеличения количества товара
+  const handleAddToCart = (productId: string) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === productId);
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevCart, { id: productId, quantity: 1 }];
+    });
+  };
+
+  // Функция уменьшения количества товара
+  const handleRemoveFromCart = (productId: string) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === productId);
+      if (existingItem) {
+        if (existingItem.quantity === 1) {
+          return prevCart.filter((item) => item.id !== productId);
+        }
+        return prevCart.map((item) =>
+          item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
+        );
+      }
+      return prevCart;
+    });
+  };
+  const handleClearFromCart = (productId: string) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'main':
+        // Collect props into a typed-any object to avoid passing a prop
+        // that MainPage's declared props may not include in its type.
+        const mainPageProps: any = {
+          selectedCategory,
+          cart,
+          onAddToCart: handleAddToCart,
+          onRemoveFromCart: handleRemoveFromCart, // Передаем функцию уменьшения
+          onClearFromCart: handleClearFromCart,
+          setPage: setCurrentPage,
+        };
+
         return (
           <div>
-            <h2>Главная страница магазина</h2>
-            <p>
-              Текущий фильтр категории: <strong>{selectedCategory === 'all' ? 'Все товары' : selectedCategory}</strong>
-            </p>
-            {/* cast to any to match downstream MainPage prop types without changing other files */}
-            <MainPage {...({ selectedCategory, onCategorySelect: handleCategoryChange } as any)} />
+            <MainPage {...mainPageProps} />
           </div>
-        )
+        );
       case 'cart':
         return (
-          <div>
+          <div className="cart-page-container">
             <h2>Корзина покупок</h2>
-            <p>Ваша корзина пока пуста. Добавьте товары на главной странице.</p>
-          </div>
-        );
-      case 'auth':
-        return (
-          <div>
-            <h2>Регистрация и Вход</h2>
-            <p>Форма авторизации появится здесь.</p>
-          </div>
-        );
-      case 'product-detail':
-        return (
-          <div>
-            <h2>Описание товара</h2>
-            <p >Детальная информация о выбранном спортивном товаре.</p>
+            {cart.length === 0 ? (
+              <p>Ваша корзина пока пуста. Добавьте товары на главной странице.</p>
+            ) : (
+              <div>
+                <p>Товаров в корзине: {totalCartCount}</p>
+                <button onClick={() => setCurrentPage('main')} className="back-btn">
+                  Вернуться к покупкам
+                </button>
+              </div>
+            )}
           </div>
         );
       default:
         return <h2>Страница не найдена (404)</h2>;
     }
   };
-
   return (
     <div className="app">
-      {/* Шапка, куда передаем состояние роутера */}
+      {/* Подключаем счетчик из App в Header */}
       <Header 
-        cartCount={cartCount}
+        cartCount={totalCartCount} 
         currentPage={currentPage} 
-        setPage={setCurrentPage} 
-        onCategorySelect={handleCategoryChange}
-      />
-
-      {/* Динамический контент */}
-      <main className="main-content">
-        {renderPage()}
-      </main>
-
-      {/* Подвал */}
-      <Footer 
         setPage={setCurrentPage} 
         onCategorySelect={handleCategoryChange} 
       />
+      <main className="main-content">
+        {renderPage()}
+      </main>
     </div>
   );
-}
+};
 
 export default App;

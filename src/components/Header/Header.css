@@ -1,88 +1,101 @@
+.logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%; /* Делает изображение круглым */
+  
+}
+
+
 /* src/components/Header/Header.css */
 .header {
   background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  width: 100%;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
   position: sticky;
   top: 0;
-  z-index: 50;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  z-index: 1000;
+  width: 100%;
 }
 
+/* Главный контейнер шапки */
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 15px 20px;
+  padding: 10px 20px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  align-items: center;        /* Идеальное центрирование всех элементов по вертикали */
+  justify-content: space-between; /* Распределяет Лого, Меню и Поиск по краям */
+  box-sizing: border-box;
 }
 
-/* Стили логотипа */
-.logo {
+/* Блок логотипа (картинка + текст) */
+.logo-block {
+  display: flex;
+  align-items: center;        /* Центрирует текст "MegaSport" относительно круглой иконки */
+  gap: 12px;                  /* Отступ между кругом и текстом */
+  cursor: pointer;
+}
+
+/* Ограничиваем размер логотипа, чтобы он не раздувал шапку */
+.logo-img {
+  width: 44px;                
+  height: 44px;               
+  object-fit: contain;        /* Чтобы логотип не искажался */
+  display: block;
+}
+
+.logo-text {
   font-size: 22px;
-  font-weight: 900;
-  color: #111827;
+  font-weight: 800;
+  color: #1e3a8a;             /* Красивый спортивный синий */
   letter-spacing: -0.5px;
-  user-select: none;
+  line-height: 1;             /* Убирает лишние отступы у текста */
 }
 
-.logo span {
-  color: #2563eb; /* Синий акцент */
-}
-
-/* Навигация (ссылки) */
+/* Меню навигации (Главная, Одежда, Обувь...) */
 .navigation {
   display: flex;
-  align-items: center;
-  gap: 20px; /* Отступы между кнопками категорий */
+  align-items: center;        /* Центрирует кнопки навигации */
+  gap: 12px;                  /* Исправляет слипание кнопок */
 }
 
 .nav-link {
   background: none;
   border: none;
-  font-size: 15px;
-  font-weight: 500;
-  color: #4b5563; /* Серый цвет текста */
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: all 0.2s ease;
-  font-family: inherit;
+  line-height: 1;
 }
 
 .nav-link:hover {
-  color: #2563eb;
-  background-color: #eff6ff; /* Легкий синий фон при наведении */
+  color: #1e3a8a;
+  background-color: #f1f5f9;
 }
 
 .nav-link.active {
   color: #2563eb;
   background-color: #eff6ff;
-  font-weight: 600;
 }
 
-/* Блок поиска и кнопок действий */
+/* Правая часть: Поиск и Корзина */
 .header-actions {
   display: flex;
-  align-items: center;
+  align-items: center;        /* Центрирует поиск и иконку корзины между собой */
   gap: 15px;
 }
 
 .search-box {
   display: flex;
-  align-items: center;
-  background-color: #f3f4f6;
+  align-items: center;        /* Центрирует лупу внутри инпута */
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 6px 12px;
-  border: 1px solid transparent;
-  transition: border-color 0.2s;
-}
-
-.search-box:focus-within {
-  border-color: #2563eb;
-  background-color: #ffffff;
 }
 
 .search-box input {
@@ -90,8 +103,8 @@
   border: none;
   outline: none;
   font-size: 14px;
-  color: #111827;
-  width: 160px;
+  color: #334155;
+  width: 180px;
 }
 
 .search-btn {
@@ -101,40 +114,30 @@
   font-size: 14px;
 }
 
-/* Иконки личного кабинета и корзины */
-.action-btn {
+.cart-btn {
   background: none;
-  border: none;
-  font-size: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
-  position: relative;
-  padding: 4px;
-  border-radius: 50%;
-  transition: background-color 0.2s;
+  font-size: 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  position: relative;
+  transition: all 0.2s;
 }
 
-.action-btn:hover {
-  background-color: #f3f4f6;
+.cart-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
 }
 
-/* Красный кружок уведомления для корзины */
 .cart-badge {
-  position: absolute;
-  top: -2px;
-  right: -2px;
   background-color: #ef4444;
   color: white;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  border-radius: 50%;
-  min-width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  border: 2px solid #ffffff;
+  padding: 2px 6px;
+  border-radius: 10px;
 }
